@@ -3,6 +3,8 @@ import { ProtectedRoute } from './shared/components/ProtectedRoute';
 import { LoginForm } from './features/auth';
 import { MainLayout } from './shared/layouts/MainLayout';
 import HomePage from './features/home/components/home';
+import { UsersForm } from './features/users';
+import UserHome from './features/users/components/userHome';
 
 function App() {
   return (
@@ -19,7 +21,8 @@ function App() {
         }
       >
         <Route path="home" element={<HomePage/>} />
-        {/* Agrega más rutas protegidas aquí */}
+        <Route path="user/*" element={<UserHome/>} />
+        <Route path="user/register" element={<UsersForm />} />
       </Route>
     </Routes>
     </BrowserRouter>
