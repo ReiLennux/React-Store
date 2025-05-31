@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ProtectedRoute } from './shared/components/ProtectedRoute';
-import { Home } from 'lucide-react';
 import { LoginForm } from './features/auth';
 import { MainLayout } from './shared/layouts/MainLayout';
+import HomePage from './features/home/components/home';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
           </ProtectedRoute>
         }
       >
-        <Route path="home" element={<Home />} />
+        <Route path="home" element={<HomePage/>} />
         {/* Agrega más rutas protegidas aquí */}
       </Route>
     </Routes>

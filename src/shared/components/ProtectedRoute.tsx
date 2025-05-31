@@ -1,4 +1,3 @@
-// src/shared/components/ProtectedRoute.tsx
 import { Navigate } from 'react-router-dom';
 import { getAuthCookie } from '../utils/cookies';
 import type { JSX } from 'react';

@@ -3,6 +3,10 @@ import type { LoginPayload } from '../types/auth.types';
 import { useLogin } from '../hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
 import { getAuthCookie } from '../../../shared/utils/cookies';
+import { Button } from '../../../components/ui/button';
+import { CardHeader, Card, CardTitle, CardDescription, CardContent, CardFooter } from '../../../components/ui/card';
+import { Input } from '../../../components/ui/input';
+import { Label } from '../../../components/ui/label';
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -11,7 +15,7 @@ export function LoginForm() {
       navigate('/home');
     }
   }, []);
-  
+
   const { login, loading, error } = useLogin();
   const [form, setForm] = useState<LoginPayload>({ username: '', password: '' });
   const [message, setMessage] = useState('');
@@ -23,6 +27,7 @@ export function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage('');
+    console.log('Form submitted:', form);
 
     const response = await login(form);
     if (response?.isSuccess) {
@@ -33,39 +38,52 @@ export function LoginForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="max-w-md mx-auto mt-10 p-6 border rounded-2xl shadow-lg bg-white space-y-4"
-    >
-      <h2 className="text-2xl font-bold text-center">Iniciar Sesión</h2>
+    <>
+      <form onSubmit={handleSubmit}>
+        <Card className="max-w-md mx-auto mt-10 p-6 border rounded-2xl shadow-lg bg-white space-y-4">
+          <CardHeader>
+            <CardTitle>Login to your account</CardTitle>
+            <CardDescription>
+              Enter your email below to login to your account
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
 
-      <input
-        type="email"
-        name="username"
-        value={form.username}
-        onChange={handleChange}
-        placeholder="Correo electrónico"
-        className="w-full p-3 border rounded-lg"
-        required
-      />
-
-      <input
-        type="password"
-        name="password"
-        value={form.password}
-        onChange={handleChange}
-        placeholder="Contraseña"
-        className="w-full p-3 border rounded-lg"
-        required
-      />
-
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition"
-        disabled={loading}
-      >
-        {loading ? 'Ingresando...' : 'Ingresar'}
-      </button>
+            <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="username"
+                  type="email"
+                  placeholder="m@example.com"
+                  required
+                  name="username"
+                  value={form.username}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="grid gap-2">
+                <div className="flex items-center">
+                  <Label htmlFor="password">Password</Label>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter className="flex-col gap-2">
+            <Button type="submit" className="w-full">
+              {loading ? 'Loading...' : 'Login'}
+            </Button>
+          </CardFooter>
+        </Card>
+      </form>
 
       {message && (
         <p className="text-center text-sm text-gray-700 mt-2">{message}</p>
@@ -74,6 +92,6 @@ export function LoginForm() {
       {error && (
         <p className="text-center text-sm text-red-500 mt-2">{error}</p>
       )}
-    </form>
+    </>
   );
 }
