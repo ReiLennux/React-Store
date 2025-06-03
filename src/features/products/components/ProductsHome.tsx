@@ -73,13 +73,15 @@ export default function ProductHome() {
       cell: ({ row }) => {
         const productId = row.original.productId
         return (
-          <Button
-            className="bg-amber-400 hover:bg-amber-500"
-            onClick={() => navigate(`/product/form/${productId}`)}
-          >
-            <Edit />
-            Edit
-          </Button>
+          <ProtectedComponent allowedRoles={["ADMINISTRADOR"]}>
+            <Button
+              className="bg-amber-400 hover:bg-amber-500"
+              onClick={() => navigate(`/product/form/${productId}`)}
+            >
+              <Edit />
+              Edit
+            </Button>
+          </ProtectedComponent>
         )
       }
     },
@@ -89,13 +91,16 @@ export default function ProductHome() {
       cell: ({ row }) => {
         const product = row.original;
         return (
-          <ProductDelete
-            id={product.productId}
-            onResult={(msg, success) => {
-              setMessage(msg);
-              if (success) fetchData();
-            }}
-          />
+          <ProtectedComponent allowedRoles={["ADMINISTRADOR"]}>
+            <ProductDelete
+              id={product.productId}
+              onResult={(msg, success) => {
+                setMessage(msg);
+                if (success) fetchData();
+              }}
+            />
+          </ProtectedComponent>
+
         );
       },
     },

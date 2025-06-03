@@ -36,6 +36,7 @@ function App() {
           <Route path='product/form' element={<ProductCreate />} />
           <Route path='product/form/:id' element={<ProductEdit />} />
           <Route path="/unauthorized" element={<UnauthorizedPage />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
