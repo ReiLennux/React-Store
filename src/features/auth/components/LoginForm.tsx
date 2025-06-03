@@ -27,7 +27,6 @@ export function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage('');
-    console.log('Form submitted:', form);
 
     const response = await login(form);
     if (response?.isSuccess) {

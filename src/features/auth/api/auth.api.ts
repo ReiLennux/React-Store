@@ -16,8 +16,6 @@ export async function loginApi(credentials: LoginPayload): Promise<Response<Auth
         throw new Error(errorData?.message || `HTTP error! status: ${res.status}`);
         }
     
-        console.log('Login successful:', res.json);
-    
         return await res.json();
     } catch (error) {
         console.error('Login failed:', error);

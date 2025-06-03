@@ -51,7 +51,6 @@ export async function getProducts(): Promise<Response<ProductResponseDto[]>> {
             throw new Error(errorData?.message || `HTTP error! Status: ${res.status}`)
         }
 
-        console.log("fetched products");
         return await res.json();
 
     } catch (error) {
@@ -104,7 +103,6 @@ export async function getPagerProducts(pager: pagerRequest): Promise<Response<pa
             throw new Error(errorData?.message || `HTTP error! Status: ${res.status}`)
         }
 
-        console.log("fetched products");
         return await res.json();
 
     } catch (error) {
@@ -127,7 +125,6 @@ export async function deleteProducts(id: number): Promise<Response<null>> {
             throw new Error(errorData?.message || `HTTP error! Status: ${res.status}`)
         }
 
-        console.log("fetched products");
         return await res.json();
 
     } catch (error) {
@@ -150,7 +147,6 @@ export async function getProductById(id: number): Promise<Response<ProductRespon
             throw new Error(errorData?.message || `HTTP error! Status: ${res.status}`)
         }
 
-        console.log("fetched products");
         return await res.json();
 
     } catch (error) {

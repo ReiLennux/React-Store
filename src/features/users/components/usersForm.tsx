@@ -24,7 +24,6 @@ export function UsersForm() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setMessage('');
-        console.log('Form submitted:', form);
 
         const response = await register(form);
         if (response?.isSuccess) {

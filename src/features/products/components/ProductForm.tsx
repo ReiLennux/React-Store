@@ -86,7 +86,6 @@ export function ProductForm({ product }: Props) {
       if (product) {
         await updateProduct(payload)
       } else {
-        console.log("isPosting...")
         await postProduct(payload)
       }
       navigate("/product")

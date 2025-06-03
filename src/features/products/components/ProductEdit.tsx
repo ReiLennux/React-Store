@@ -15,7 +15,6 @@ export default function ProductEdit() {
     const response = await getId(parseInt(id!))
     if (response && response.isSuccess && response.result) {
       setProduct(response.result)
-      console.log(response.result)
     }
   }
 

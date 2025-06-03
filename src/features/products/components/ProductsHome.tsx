@@ -14,6 +14,7 @@ import { ProductTable } from "./ProductTable"
 import { ProductDetails } from "./ProductDetails"
 import { BadgeCheckIcon, Edit, Plus } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { ProtectedComponent } from "@/shared/components/ProtectedComponent"
 
 
 
@@ -115,7 +116,7 @@ export default function ProductHome() {
           </CardTitle>
           <CardDescription>
             <p className="text-lg">Manage your products here!</p>
-            <p className="text-sm text-gray-500 mt-2">If you are 
+            <p className="text-sm text-gray-500 mt-2">If you are
               <Badge
                 variant="secondary"
                 className="mx-1 bg-blue-500 text-white dark:bg-blue-600"
@@ -123,17 +124,20 @@ export default function ProductHome() {
                 <BadgeCheckIcon />
                 ADMINISTRADOR
               </Badge>
-               you can do it anything here !</p>
+              you can do it anything here !</p>
           </CardDescription>
-          <div className="flex justify-end">
-            <Button
-              className="bg-green-600 hover:bg-green-700"
-              onClick={() => navigate('/product/form')}
-            >
-              <Plus />
-              Add Product
-            </Button>
-          </div>
+          <ProtectedComponent allowedRoles={["ADMINISTRADOR"]}>
+            <div className="flex justify-end">
+              <Button
+                className="bg-green-600 hover:bg-green-700"
+                onClick={() => navigate('/product/form')}
+              >
+                <Plus />
+                Add Product
+              </Button>
+            </div>
+          </ProtectedComponent>
+
         </CardHeader>
         <CardContent>
           <ProductTable
