@@ -2,8 +2,7 @@ import type { AuthResponse, LoginPayload } from "../types/auth.types";
 import type { Response } from "../../../types/api";
 
 export async function loginApi(credentials: LoginPayload): Promise<Response<AuthResponse>> {
-    const API_URL = "http://localhost:7575"; // Replace with your actual API URL
-    console.log('API URL:', API_URL);
+    const API_URL = "http://localhost:7676"; 
     
     try {
         const res = await fetch(`${API_URL}/api/auth/login`, {

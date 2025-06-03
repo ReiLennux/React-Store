@@ -32,6 +32,7 @@ export function LoginForm() {
     const response = await login(form);
     if (response?.isSuccess) {
       setMessage(`¡Bienvenido, ${response.result?.user.name}!`);
+      navigate('/home');
     } else {
       setMessage(response?.message || 'Error al iniciar sesión');
     }

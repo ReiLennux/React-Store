@@ -18,7 +18,7 @@ const items = [
   },
   {
     title: "Products",
-    url: "/Products",
+    url: "/product",
     icon: Store,
   },
 ]
