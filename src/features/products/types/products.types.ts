@@ -1,11 +1,11 @@
 export interface ProductRequestDto {
-    id: number;
+    productId?: number
     name: string;
     price: number;
-    description: string;
-    category: string;
-    stock: string;
-    image?: File
+    description: string | null;
+    categoryName: string;
+    stock: number;
+    image: File | null;
 }
 
 export interface ProductResponseDto {
@@ -17,6 +17,7 @@ export interface ProductResponseDto {
     stock: number;
     imageUrl: string;
     imageLocalPath: string;
+    image: File | null
 }
 
 export interface pagerResponse {

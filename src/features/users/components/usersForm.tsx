@@ -12,7 +12,7 @@ import { useAlert } from "@/contexts/AlertContext";
 export function UsersForm() {
     const navigate = useNavigate();
 
-      const { showAlert } = useAlert();
+    const { showAlert } = useAlert();
     const { register, loading, error } = useRegister();
     const [form, setForm] = useState<UserRequest>({ name: '', password: '', email: '', phoneNumber: '' });
     const [message, setMessage] = useState('');

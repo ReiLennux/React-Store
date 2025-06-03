@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Trash } from "lucide-react";
 import { useDelete } from "../hooks/useProduct";
+import { Button } from "@/components/ui/button";
 
 // Añadimos props para manejar desde el padre
 interface ProductDeleteProps {
@@ -34,9 +35,11 @@ export function ProductDelete({ id, onResult }: ProductDeleteProps) {
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
-        <Trash />
-        {loading ? "Loading..." : "Delete"}
+      <AlertDialogTrigger asChild>
+        <Button className="bg-red-500 hover:bg-red-700">
+          <Trash />
+          {loading ? "Loading..." : "Delete"}
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -47,7 +50,12 @@ export function ProductDelete({ id, onResult }: ProductDeleteProps) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleSubmit}>Continue</AlertDialogAction>
+          <AlertDialogAction 
+          className="bg-red-500 hover:bg-red-700"
+          onClick={handleSubmit}
+          >
+            Yes! Delete it.
+            </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

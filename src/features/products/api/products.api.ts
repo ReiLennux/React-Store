@@ -12,8 +12,8 @@ export async function postProduct(request: ProductRequestDto): Promise<Response<
 
     formData.append("name", request.name);
     formData.append("price", request.price.toString());
-    formData.append("description", request.description);
-    formData.append("category", request.category);
+    formData.append("description", request.description || '');
+    formData.append("categoryName", request.categoryName);
     formData.append("stock", request.stock.toString());
 
     if (request.image) {
@@ -64,15 +64,15 @@ export async function updateProduct(request: ProductRequestDto): Promise<Respons
 
     formData.append("name", request.name);
     formData.append("price", request.price.toString());
-    formData.append("description", request.description);
-    formData.append("category", request.category);
+    formData.append("description", request.description || '');
+    formData.append("categoryName", request.categoryName);
     formData.append("stock", request.stock.toString());
 
     if (request.image) {
         formData.append("image", request.image);
     }
 
-    const res = await fetch(`${API_URL}/api/products`, {
+    const res = await fetch(`${API_URL}/api/products/${request.productId}`, {
         method: "PUT",
         headers: {
             "Authorization": `Bearer ${token}`,
