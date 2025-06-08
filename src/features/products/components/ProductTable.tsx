@@ -1,10 +1,16 @@
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { flexRender, Table as tb } from "@tanstack/react-table";
+import { Table as tb } from "@tanstack/react-table";
 import { ProductResponseDto } from "../types/products.types";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import lain from '@/assets/lain.png';
+import { ProductDetails } from "./ProductDetails";
+import { Edit, ShoppingCart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { ProtectedComponent } from "@/shared/components/ProtectedComponent";
+import { ProductDelete } from "./ProductDelete";
+import { useNavigate } from "react-router-dom";
 
 interface ProductTableProps {
   table: tb<ProductResponseDto>;
-  onResult?: (message: string, success: boolean) => void;
   loading?: boolean;
   error: string | null;
 }
@@ -14,55 +20,80 @@ export function ProductTable({
   loading = false,
   error,
 }: ProductTableProps) {
-  const columnsLength = table.getAllColumns().length
+  const navigate = useNavigate();
+
+  const rows = table.getRowModel().rows;
+
+  if (loading) {
+    return (
+      <Card className="text-center shadow-md rounded-2xl py-10">
+        <CardTitle className="text-lg font-semibold">Loading products...</CardTitle>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="text-center shadow-md rounded-2xl border border-red-500 py-10">
+        <CardTitle className="text-red-500 font-semibold">Error: {error}</CardTitle>
+      </Card>
+    );
+  }
+
+  if (rows.length === 0) {
+    return (
+      <Card className="text-center shadow-md rounded-2xl py-10">
+        <CardTitle className="text-gray-500">There are no products.</CardTitle>
+      </Card>
+    );
+  }
 
   return (
-    <Table>
-      <TableCaption>A list of your products.</TableCaption>
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <TableHead key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(header.column.columnDef.header, header.getContext())}
-              </TableHead>
-            ))}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {loading ? (
-          <TableRow>
-            <TableCell colSpan={columnsLength} className="text-center h-24">
-              Loading...
-            </TableCell>
-          </TableRow>
-        ) : error ? (
-          <TableRow>
-            <TableCell colSpan={columnsLength} className="text-center h-24 text-red-500">
-              {error}
-            </TableCell>
-          </TableRow>
-        ) : table.getRowModel().rows.length > 0 ? (
-          table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={columnsLength} className="text-center h-24">
-              No products found.
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
-  )
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {rows.map((row) => {
+        const { name, stock, price, productId } = row.original;
+
+        return (
+          <ProductDetails key={row.id} product={row.original}>
+            <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <CardHeader className="flex justify-center rounded-t-2xl">
+                <img
+                  src={lain}
+                  alt={`Imagen de ${name}`}
+                  className="max-w-[150px] rounded-md"
+                />
+              </CardHeader>
+
+              <CardContent className="space-y-3 px-4 py-4">
+                <p className="text-xl font-semibold line-clamp-2 min-h-[3.5rem]">{name}</p>
+                <p className="text-sm text-gray-500">In Stock: {stock}</p>
+
+                <div className="flex items-center justify-between mt-4">
+                  <h1 className="text-3xl font-bold">${price}</h1>
+                  <Button className="hover:bg-green-600 flex items-center gap-2">
+                    <ShoppingCart className="w-4 h-4" />
+                    Add
+                  </Button>
+                </div>
+              </CardContent>
+
+              <ProtectedComponent allowedRoles={["ADMINISTRADOR"]}>
+                <CardFooter className="grid grid-cols-2 gap-3 border-t pt-4">
+                  <Button
+                    className="bg-amber-400 hover:bg-amber-500"
+                    onClick={() => navigate(`/product/form/${productId}`)}
+                  >
+                    <Edit className="w-4 h-4" />
+                  </Button>
+
+                  <ProductDelete id={productId} />
+                </CardFooter>
+              </ProtectedComponent>
+            </Card>
+          </ProductDetails>
+        );
+      })}
+    </div>
+  );
 }
+

@@ -7,36 +7,46 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog"
-import { Logs } from "lucide-react"
 import { ProductResponseDto } from "../types/products.types"
-import { Button } from "@/components/ui/button"
+import { JSX } from "react"
+import lain from '@/assets/lain.png';
+
 
 interface ProductDetailsProps {
   product: ProductResponseDto
+  children: JSX.Element;
 }
 
-export function ProductDetails({ product }: ProductDetailsProps) {
+export function ProductDetails({ product, children }: ProductDetailsProps) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" className="flex items-center gap-2 text-blue-600 hover:text-blue-800">
-          <Logs size={16} />
-          Details
-        </Button>
+        {children}
       </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle className="text-lg font-semibold">
-            Product Details
-          </AlertDialogTitle>
-        </AlertDialogHeader>
-
-        <div className="grid grid-cols-1 gap-2 text-sm text-gray-700">
-          <div>
-            <span className="font-medium">Name:</span> {product.name}
+      <AlertDialogContent className="p-0 overflow-hidden">
+        {product.imageUrl && (
+          <div className="relative h-48 w-full">
+            <img
+              src={lain}
+              // src={`http://localhost:7575${product.imageUrl}`}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+            {/* Desvanecido inferior */}
+            <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-white via-white/80 to-transparent" />
           </div>
+        )}
+
+        <div className="p-6 space-y-2 text-sm text-gray-700">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-lg font-semibold">
+              {product.name}
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+
           <div>
-            <span className="font-medium">Description:</span> {product.description || "No description"}
+            <span className="font-medium">Description:</span>{" "}
+            {product.description || "No description"}
           </div>
           <div>
             <span className="font-medium">Price:</span> ${product.price}
@@ -47,22 +57,12 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           <div>
             <span className="font-medium">Stock:</span> {product.stock}
           </div>
-          {product.imageUrl && (
-            <div>
-              <span className="font-medium">Image:</span>
-              <img
-                src={`localhost:7575${product.imageUrl}`}
-                alt={`localhost:7575${product.imageUrl}`}
-                className="mt-1 h-32 w-32 object-cover border rounded"
-              />
-            </div>
-          )}
         </div>
 
-        <AlertDialogFooter>
+        <AlertDialogFooter className="px-6 pb-4">
           <AlertDialogCancel>Close</AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }
