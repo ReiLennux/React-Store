@@ -51,8 +51,8 @@ export function ProductDetails({ product }: ProductDetailsProps) {
             <div>
               <span className="font-medium">Image:</span>
               <img
-                src={`localhost:3000/product.imageUrl`}
-                alt={product.name}
+                src={`localhost:7575${product.imageUrl}`}
+                alt={`localhost:7575${product.imageUrl}`}
                 className="mt-1 h-32 w-32 object-cover border rounded"
               />
             </div>

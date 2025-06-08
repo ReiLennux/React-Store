@@ -30,7 +30,7 @@ export async function put(request:ProductRequestDto): Promise<Response<ProductRe
     
 }
 
-export async function getPaged(request: pagerRequest): Promise<Response<pagerResponse>> {
+export async function getPaged(request: pagerRequest): Promise<Response<pagerResponse<ProductResponseDto>>> {
     const response = await getPagerProducts(request);
 
     if(!response?.isSuccess) throw new Error(response?.message || 'Get Page Error');

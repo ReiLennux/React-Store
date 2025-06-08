@@ -67,7 +67,7 @@ export function AppSidebar() {
                 <DropdownMenuItem
                   onClick={() => {
                     clearAuthCookies();
-                    navigate('/login');
+                    navigate('/auth');
                   }}
                 >
                   <span>Logout</span>

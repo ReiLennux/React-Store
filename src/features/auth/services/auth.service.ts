@@ -1,6 +1,6 @@
-import type { AuthResponse, LoginPayload } from "../types/auth.types";
+import type { AuthResponse, LoginPayload, RegisterRequest } from "../types/auth.types";
 import type { Response } from "../../../types/api";
-import { loginApi } from "../api/auth.api";
+import { loginApi, registerApi } from "../api/auth.api";
 import { setAuthCookies } from "../../../shared/utils/cookies";
 
 export async function login(credentials: LoginPayload): Promise<Response<AuthResponse>> {
@@ -12,4 +12,12 @@ export async function login(credentials: LoginPayload): Promise<Response<AuthRes
         setAuthCookies(token, name, email, phoneNumber);
         
         return response;
+}
+
+export async function register(userData: RegisterRequest): Promise<Response<null>> {
+    const response = await registerApi(userData);
+    if (!response?.isSuccess) {
+        throw new Error(response?.message || 'Registration error');
+    }
+    return response;
 }

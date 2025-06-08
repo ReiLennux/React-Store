@@ -9,3 +9,11 @@ export interface AuthResponse {
   token: string;
   user: User
 }
+
+export interface RegisterRequest {
+    name: string;
+    password: string;
+    email: string;
+    phoneNumber: string;
+
+}

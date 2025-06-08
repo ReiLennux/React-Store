@@ -30,7 +30,7 @@ export function UsersForm() {
             setMessage(`${response.message}!`);
             showAlert(response.message!, 'success', 3000);
             setTimeout(() => {
-                navigate('/login');
+                navigate('/auth');
             }, 2000); // Redirect after 2 seconds
         } else {
             setMessage(response?.message || 'Error al iniciar sesión');

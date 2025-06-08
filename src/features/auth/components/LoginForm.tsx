@@ -1,97 +1,93 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { LoginPayload } from '../types/auth.types';
 import { useLogin } from '../hooks/useLogin';
-import { useNavigate } from 'react-router-dom';
 import { getAuthCookie } from '../../../shared/utils/cookies';
 import { Button } from '../../../components/ui/button';
-import { CardHeader, Card, CardTitle, CardDescription, CardContent, CardFooter } from '../../../components/ui/card';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
+import login_img from '@/assets/logo.png';
 
 export function LoginForm() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (getAuthCookie('token')) {
-      navigate('/home');
-    }
-  }, []);
+    const navigate = useNavigate();
+    const { login, loading, error } = useLogin();
 
-  const { login, loading, error } = useLogin();
-  const [form, setForm] = useState<LoginPayload>({ username: '', password: '' });
-  const [message, setMessage] = useState('');
+    const [form, setForm] = useState<LoginPayload>({ username: '', password: '' });
+    const [message, setMessage] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+    useEffect(() => {
+        if (getAuthCookie('token')) {
+            navigate('/home');
+        }
+    }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMessage('');
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    };
 
-    const response = await login(form);
-    if (response?.isSuccess) {
-      setMessage(`¡Bienvenido, ${response.result?.user.name}!`);
-      navigate('/home');
-    } else {
-      setMessage(response?.message || 'Error al iniciar sesión');
-    }
-  };
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setMessage('');
 
-  return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <Card className="max-w-md mx-auto mt-10 p-6 border rounded-2xl shadow-lg bg-white space-y-4">
-          <CardHeader>
-            <CardTitle>Login to your account</CardTitle>
-            <CardDescription>
-              Enter your email below to login to your account
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+        const response = await login(form);
 
-            <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="username"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                  name="username"
-                  value={form.username}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  required
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
-                />
-              </div>
+        if (response?.isSuccess) {
+            setMessage(`¡Bienvenido, ${response.result?.user.name}!`);
+            navigate('/home');
+        } else {
+            setMessage(response?.message || 'Error al iniciar sesión');
+        }
+    };
+    return (
+        <form onSubmit={handleSubmit} className="w-full max-w-md space-y-6">
+            <div>
+                <img src={login_img} alt="logo" className="w-24 mb-4" />
+                <h1 className="text-4xl font-bold mb-1">
+                    Welcome Again!
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                    Enter your email below to log in to your account.
+                </p>
             </div>
-          </CardContent>
-          <CardFooter className="flex-col gap-2">
-            <Button type="submit" className="w-full">
-              {loading ? 'Loading...' : 'Login'}
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
 
-      {message && (
-        <p className="text-center text-sm text-gray-700 mt-2">{message}</p>
-      )}
+            <div className="grid gap-4">
+                <div className="grid gap-2">
+                    <Label htmlFor="username">Email</Label>
+                    <Input
+                        id="username"
+                        name="username"
+                        type="email"
+                        placeholder="m@example.com"
+                        required
+                        value={form.username}
+                        onChange={handleInputChange}
+                    />
+                </div>
 
-      {error && (
-        <p className="text-center text-sm text-red-500 mt-2">{error}</p>
-      )}
-    </>
-  );
+                <div className="grid gap-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="•••••••••••"
+                        required
+                        value={form.password}
+                        onChange={handleInputChange}
+                    />
+                </div>
+
+                <Button type="submit" className="w-full">
+                    {loading ? 'Loading...' : 'Login'}
+                </Button>
+
+                {(message || error) && (
+                    <div className="text-center text-sm">
+                        {message && <p className="text-green-600">{message}</p>}
+                        {error && <p className="text-red-500">{error}</p>}
+                    </div>
+                )}
+            </div>
+        </form>
+    )
 }

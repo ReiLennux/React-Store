@@ -13,7 +13,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
   const token = getAuthCookie("token");
   const role = useUserRole(); 
   if (!token) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/auth" />;
   }
 
   if (allowedRoles && allowedRoles.length > 0 && role) {
@@ -24,7 +24,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
       }
     } catch (e) {
       console.error("Error decoding token", e);
-      return <Navigate to="/login" />;
+      return <Navigate to="/auth" />;
     }
   }
 

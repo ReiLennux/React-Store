@@ -20,8 +20,8 @@ export interface ProductResponseDto {
     image: File | null
 }
 
-export interface pagerResponse {
-    items: Array<object>;
+export interface pagerResponse<T> {
+    items: Array<T>;
     totalCount: number;
     totalPages: number;
     currentPage: number;

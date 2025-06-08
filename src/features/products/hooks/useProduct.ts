@@ -34,7 +34,7 @@ export function useGetPager() {
     const [error, setError] = useState<string | null>(null);
 
 
-    const getPager = async (pager: pagerRequest): Promise<Response<pagerResponse> | null> => {
+    const getPager = async (pager: pagerRequest): Promise<Response<pagerResponse<ProductResponseDto>> | null> => {
         setLoading(true);
         setError(null);
 

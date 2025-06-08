@@ -88,9 +88,10 @@ export async function updateProduct(request: ProductRequestDto): Promise<Respons
 }
 
 
-export async function getPagerProducts(pager: pagerRequest): Promise<Response<pagerResponse>> {
+export async function getPagerProducts(pager: pagerRequest): Promise<Response<pagerResponse<ProductResponseDto>>> {
     try {
-        const res = await fetch(`${API_URL}/api/products/All?page=${pager.page}recordsPerPage=${pager.record}`, {
+        const res = await fetch(`${API_URL}/api/products/All?page=${pager.page}&recordsPerPage=${pager.record}`, {
+                                                           
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
