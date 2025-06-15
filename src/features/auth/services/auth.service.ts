@@ -14,7 +14,7 @@ export async function login(credentials: LoginPayload): Promise<Response<AuthRes
         return response;
 }
 
-export async function register(userData: RegisterRequest): Promise<Response<null>> {
+export async function registerUser(userData: RegisterRequest): Promise<Response<null>> {
     const response = await registerApi(userData);
     if (!response?.isSuccess) {
         throw new Error(response?.message || 'Registration error');

@@ -12,14 +12,17 @@ import {
 import { Trash } from "lucide-react";
 import { useDelete } from "../hooks/useProduct";
 import { Button } from "@/components/ui/button";
+import { useAlert } from "@/contexts/AlertContext";
 
 // Añadimos props para manejar desde el padre
 interface ProductDeleteProps {
   id: number;
-  onResult?: (message: string, success: boolean) => void;
 }
 
-export function ProductDelete({ id, onResult }: ProductDeleteProps) {
+export function ProductDelete({ id }: ProductDeleteProps) {
+  const { showAlert } = useAlert();
+
+
   const { delProduct, loading } = useDelete();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,9 +30,12 @@ export function ProductDelete({ id, onResult }: ProductDeleteProps) {
     const response = await delProduct(id);
 
     if (response?.isSuccess) {
-      onResult?.("This product was deleted successfully!", true);
+      showAlert(response.message!, 'success', 3000);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } else {
-      onResult?.(response?.message || "Cannot delete this product. Check and try again", false);
+      showAlert(response?.message || "Unknown error", 'error', 3000)
     }
   };
 
@@ -37,7 +43,14 @@ export function ProductDelete({ id, onResult }: ProductDeleteProps) {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button className="bg-red-500 hover:bg-red-700">
-          <Trash />
+          {loading ? (
+            <svg className="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+            </svg>
+          ) : (
+            <Trash />
+          )}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
@@ -49,12 +62,12 @@ export function ProductDelete({ id, onResult }: ProductDeleteProps) {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction 
-          className="bg-red-500 hover:bg-red-700"
-          onClick={handleSubmit}
+          <AlertDialogAction
+            className="bg-red-500 hover:bg-red-700"
+            onClick={handleSubmit}
           >
             Yes! Delete it.
-            </AlertDialogAction>
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

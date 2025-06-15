@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { Response } from "../../../types/api";
 import { RegisterRequest } from "../types/auth.types";
+import { registerUser } from "../services/auth.service";
 
 
 export function useRegister() {
@@ -12,7 +13,7 @@ export function useRegister() {
         setError(null);
 
         try {
-            const response = await register(userData);
+            const response = await registerUser(userData);
             return response;
         }catch (err: unknown) {
             const errorMessage = err instanceof Error ? err.message : 'Unknown error';

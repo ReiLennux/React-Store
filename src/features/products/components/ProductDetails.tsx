@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { ProductResponseDto } from "../types/products.types"
 import { JSX } from "react"
-import lain from '@/assets/lain.png';
+//import lain from '@/assets/lain.png';
 
 
 interface ProductDetailsProps {
@@ -27,10 +27,10 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
         {product.imageUrl && (
           <div className="relative h-48 w-full">
             <img
-              src={lain}
-              // src={`http://localhost:7575${product.imageUrl}`}
+              //src={lain}
+              src={`http://localhost:7575/public/${product.imageUrl}`}
               alt={product.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover object-top"
             />
             {/* Desvanecido inferior */}
             <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-white via-white/80 to-transparent" />

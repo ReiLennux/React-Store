@@ -1,5 +1,5 @@
 // src/shared/components/Sidebar.tsx
-import { Home, ChevronUp, User2, Store, UserCircle } from 'lucide-react';
+import { Home, ChevronUp, User2, Store, UserCircle, Tags } from 'lucide-react';
 import { clearAuthCookies, getAuthCookie } from '../utils/cookies';
 import { useNavigate } from 'react-router-dom';
 import { SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, Sidebar, SidebarFooter } from '../../components/ui/sidebar';
@@ -20,6 +20,11 @@ const items = [
     title: "Products",
     url: "/product",
     icon: Store,
+  },
+  {
+    title: "Coupons",
+    url: "/coupon",
+    icon: Tags,
   },
 ]
 

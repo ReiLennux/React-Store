@@ -51,7 +51,7 @@ export function UsersForm() {
 
                         <div className="flex flex-col gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">Role</Label>
                                 <Input
                                     id="name"
                                     type="text"
@@ -71,32 +71,6 @@ export function UsersForm() {
                                     required
                                     name="email"
                                     value={form.email}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
-                                </div>
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    required
-                                    name="password"
-                                    value={form.password}
-                                    onChange={handleChange}
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="phoneNumber">Phone Number</Label>
-                                </div>
-                                <Input
-                                    id="phoneNumber"
-                                    type="number"
-                                    required
-                                    name="phoneNumber"
-                                    value={form.phoneNumber}
                                     onChange={handleChange}
                                 />
                             </div>

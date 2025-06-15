@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ProductRequestDto } from "../types/products.types"
-import { postProduct, updateProduct } from "../api/products.api"
 import { Textarea } from "@/components/ui/textarea"
+import { usePost, usePut } from "../hooks/useProduct"
+import { useAlert } from "@/contexts/AlertContext"
 
 interface Props {
   product?: ProductRequestDto
@@ -32,6 +33,10 @@ export function ProductForm({ product }: Props) {
   const [originalData, setOriginalData] = useState<string>("")
   const [error, setError] = useState<string | null>(null)
   const navigate = useNavigate()
+  const { postProduct, loading: isPosting, error: postError } = usePost();
+  const { putProduct, loading: isPatching, error: patchError } = usePut();
+  const { showAlert } = useAlert();
+
 
   useEffect(() => {
     if (product) {
@@ -46,7 +51,7 @@ export function ProductForm({ product }: Props) {
         image: null,
       })
 
-      // Guardamos el original en string para comparar luego
+
       const { image, ...rest } = product
       setOriginalData(JSON.stringify(rest))
     }
@@ -83,15 +88,19 @@ export function ProductForm({ product }: Props) {
     }
 
     try {
+      let response;
       if (product) {
-        await updateProduct(payload)
+        response = await putProduct(payload)
       } else {
-        await postProduct(payload)
+        response = await postProduct(payload)
       }
-      navigate("/product")
+      showAlert(response?.message || 'Success', 'success', 3000);
+      setTimeout(() => {
+        navigate('/product');
+      }, 2000); // Redirect after 2 seconds
     } catch (err) {
-      console.error(err)
-      setError("Error submitting the form")
+      setError(`Error submitting the form ${err}`)
+      showAlert(error || postError || patchError || "Unknown error", 'error', 3000)
     }
   }
 
@@ -99,7 +108,7 @@ export function ProductForm({ product }: Props) {
     <form onSubmit={handleSubmit} className="space-y-4 max-w-lg mx-auto">
       {error && <p className="text-red-500">{error}</p>}
 
-      <Input name="id" value={formData.productId} hidden={true}/>
+      <Input name="id" value={formData.productId} hidden={true} />
 
       <Input name="name" value={formData.name} onChange={handleChange} placeholder="Product Name" required />
 
@@ -113,7 +122,21 @@ export function ProductForm({ product }: Props) {
 
       <Input type="file" accept="image/*" onChange={handleImageChange} />
 
-      <Button type="submit" className="w-full">{product ? "Update" : "Create"} Product</Button>
+      <Button
+        type="submit"
+        disabled={isPosting || isPatching}
+        className={`${product ? 'bg-amber-400 hover:bg-amber-500' : 'bg-green-600 hover:bg-green-700'}`}
+      >
+        {isPatching || isPosting ? (
+          <span className="flex items-center">
+            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Processing...
+          </span>
+        ) : product ? "Update Coupon" : "Create Coupon"}
+      </Button>
     </form>
   )
 }
