@@ -5,7 +5,7 @@ export async function registerApi(request: UserRequest): Promise<Response<null>>
     const API_URL = "http://localhost:7676"; // Replace with your actual API URL
     
     try {
-        const res = await fetch(`${API_URL}/api/auth/register`, {
+        const res = await fetch(`${API_URL}/api/auth/assignRole`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(request),

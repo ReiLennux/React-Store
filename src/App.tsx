@@ -52,7 +52,11 @@ function App() {
 
           {/* COUPON ROUTES */}
 
-          <Route path='coupon/*' element={<CouponsPage />} />
+          <Route path='coupon/*' element={
+            <ProtectedRoute allowedRoles={['ADMINISTRADOR', 'VENTAS']}>
+              <CouponsPage />
+            </ProtectedRoute>
+          } />
           <Route path='coupon/form' element={
             <ProtectedRoute allowedRoles={['ADMINISTRADOR', 'VENTAS']}>
               <CouponCreate />

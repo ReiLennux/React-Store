@@ -4,27 +4,32 @@ import { clearAuthCookies, getAuthCookie } from '../utils/cookies';
 import { useNavigate } from 'react-router-dom';
 import { SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, Sidebar, SidebarFooter } from '../../components/ui/sidebar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { ProtectedComponent } from './ProtectedComponent';
 
 const items = [
   {
     title: "Home",
     url: "/home",
     icon: Home,
+    access: []
   },
   {
     title: "Users",
     url: "/user",
     icon: UserCircle,
+    access: ['ADMINISTRADOR']
   },
   {
     title: "Products",
     url: "/product",
     icon: Store,
+    access: []
   },
   {
     title: "Coupons",
     url: "/coupon",
     icon: Tags,
+    access: ['ADMINISTRADOR', 'VENTAS']
   },
 ]
 
@@ -41,6 +46,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
+                <ProtectedComponent allowedRoles={item.access}>
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
@@ -49,6 +55,8 @@ export function AppSidebar() {
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
+                </ProtectedComponent>
+
               ))}
             </SidebarMenu>
           </SidebarGroupContent>

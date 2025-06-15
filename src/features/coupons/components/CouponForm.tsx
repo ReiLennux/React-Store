@@ -141,13 +141,6 @@ export default function CouponForm({ coupon, id }: Props) {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-            {/* {(error || postError || patchError) && (
-                <Alert variant="destructive">
-                    <AlertDescription>
-                        {error || postError || patchError}
-                    </AlertDescription>
-                </Alert>
-            )} */}
 
             <div className="space-y-2">
                 <Label htmlFor="couponCode">Coupon Code *</Label>
@@ -313,7 +306,7 @@ export default function CouponForm({ coupon, id }: Props) {
                 <Label htmlFor="StateCoupon">Active Coupon</Label>
             </div>
 
-            <div className="flex justify-end space-x-4 pt-4">
+            <div className="grid grid-cols-2 space-x-4 pt-4">
                 <Button
                     type="button"
                     variant="outline"

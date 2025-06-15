@@ -61,14 +61,14 @@ export default function CouponsTable({ coupons }: CouponsTableProps) {
 
                 <div className="flex flex-col justify-between p-4 text-sm text-gray-700">
                   <div>
-                    <p className="font-semibold text-gray-900 mb-1">Válido hasta:</p>
+                    <p className="font-semibold text-gray-900 mb-1">Valid until:</p>
                     <p className={`mb-2 ${isExpired ? "text-red-500" : "text-gray-700"}`}>
                       {format(new Date(item.DateEnd), "dd MMM yyyy")}
                     </p>
 
                     {item.minAmount && (
                       <div className="mt-2">
-                        <p className="font-semibold text-gray-900">Compra mínima:</p>
+                        <p className="font-semibold text-gray-900">Minimum Amount:</p>
                         <p>${item.minAmount}</p>
                       </div>
                     )}
@@ -83,7 +83,7 @@ export default function CouponsTable({ coupons }: CouponsTableProps) {
               </CouponsDetails>
 
               <ProtectedComponent allowedRoles={['ADMINISTRADOR']}>
-                <div className="flex flex-col border-l border-gray-200">
+                <div hidden={!isActive} className="flex flex-col border-l border-gray-200">
                   <Button
                     variant="ghost"
                     className="rounded-none h-full flex-1 hover:bg-yellow-100"

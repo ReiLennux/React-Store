@@ -27,7 +27,7 @@ export default function ProductEdit() {
   if (!product) return <p>Product not found</p>
 
   return (
-      <div className="flex items-center justify-center min-h-11/12 bg-gray-50 px-4">
+    <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] bg-gray-50 px-4 py-8">
       {loading ? (
         <Card>
           <CardHeader>
@@ -45,17 +45,27 @@ export default function ProductEdit() {
           </CardHeader>
         </Card>
       ) : (
-          <Card className="w-full max-w-1/4 p-6 border rounded-2xl shadow-lg bg-white space-y-4">
-            <CardHeader>
-              <CardTitle>Register a new Product</CardTitle>
-              <CardDescription>
-                Please fill in the details below to register a new product.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ProductForm product={product} />
-            </CardContent>
-          </Card>
+        <Card className="w-full max-w-3xl p-6 border rounded-2xl shadow-lg bg-white space-y-4">
+          <CardHeader className="">
+            <div className="relative h-48 w-full">
+              <img
+                //src={lain}
+                src={`http://localhost:7575/public/${product.imageUrl}`}
+                alt={product.name}
+                className="w-full h-full object-cover object-top"
+              />
+              {/* Desvanecido inferior */}
+              <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-white via-white/80 to-transparent" />
+            </div>
+            <CardTitle className="text-2xl font-bold">Edit a this Product</CardTitle>
+            <CardDescription className="text-gray-600">
+              Please fill in the details below to edit this product.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ProductForm product={product} />
+          </CardContent>
+        </Card>
       )}
 
     </div>

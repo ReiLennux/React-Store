@@ -9,6 +9,11 @@ interface ProtectedComponentProps {
 export function ProtectedComponent({ allowedRoles, children }: ProtectedComponentProps) {
   const role = useUserRole();
 
-  if (!allowedRoles.includes(role!)) return null;
-  return children;
+  
+  if (allowedRoles.length === 0 || allowedRoles.includes(role!)) {
+    return children;
+  }
+
+  return null;
 }
+
