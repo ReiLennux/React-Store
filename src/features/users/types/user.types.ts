@@ -10,5 +10,5 @@ export interface UserRequest {
     password: string;
     email: string;
     phoneNumber: string;
-
+    role: string;
 }

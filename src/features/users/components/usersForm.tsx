@@ -14,7 +14,7 @@ export function UsersForm() {
 
     const { showAlert } = useAlert();
     const { register, loading, error } = useRegister();
-    const [form, setForm] = useState<UserRequest>({ name: '', password: '', email: '', phoneNumber: '' });
+    const [form, setForm] = useState<UserRequest>({ name: '', password: '', email: '', phoneNumber: '', role: '' });
     const [message, setMessage] = useState('');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
