@@ -8,8 +8,8 @@ export async function login(credentials: LoginPayload): Promise<Response<AuthRes
   if (!response?.isSuccess) throw new Error(response?.message || 'Authentication error');
         
         const { token } = response.result;
-        const {name, email, phoneNumber} = response.result.user;
-        setAuthCookies(token, name, email, phoneNumber);
+        const {id, name, email, phoneNumber} = response.result.user;
+        setAuthCookies(Number(id), token, name, email, phoneNumber);
         
         return response;
 }

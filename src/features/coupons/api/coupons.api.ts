@@ -73,7 +73,6 @@ export async function getCouponByCode(code: string): Promise<Response<CouponsRes
 
 export async function postCoupon(request: CouponsRequestDto): Promise<Response<CouponsResponseDto>> {
 
-    console.log(request)
     try {
         const res = await fetch(`${API_URL}/api/coupons`, {
             method: "POST",
@@ -85,8 +84,6 @@ export async function postCoupon(request: CouponsRequestDto): Promise<Response<C
             body: JSON.stringify(request),
         });
 
-        console.log()
-        console.log(res)
         if (!res.ok) {
             const errorData = await res.json().catch(() => null);
             throw new Error(errorData?.message || `HTTP error! status: ${res.status}`);
@@ -134,8 +131,6 @@ export async function deleteCoupon(id: number): Promise<Response<null>> {
                 "Authorization": `Bearer ${token}`
             }
         });
-
-        console.log(res)
 
         if (!res.ok) {
             const errorData = await res.json().catch(() => null);

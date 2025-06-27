@@ -2,11 +2,13 @@ import { Table as tb } from "@tanstack/react-table";
 import { ProductResponseDto } from "../types/products.types";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { ProductDetails } from "./ProductDetails";
-import { Edit, ShoppingCart } from "lucide-react";
+import { Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProtectedComponent } from "@/shared/components/ProtectedComponent";
 import { ProductDelete } from "./ProductDelete";
 import { useNavigate } from "react-router-dom";
+import AddToCart from "@/features/cart/components/AddToCart";
+import productDtoToProductFromCartDto from "@/shared/utils/mapper";
 
 interface ProductTableProps {
   table: tb<ProductResponseDto>;
@@ -53,8 +55,8 @@ export function ProductTable({
         const { name, stock, price, productId } = row.original;
 
         return (
-          <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <ProductDetails key={row.id} product={row.original}>
+          <Card className="rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300" key={row.id}>
+            <ProductDetails product={row.original}>
               <div>
 
                 <CardHeader className="flex justify-center rounded-t-2xl">
@@ -70,10 +72,7 @@ export function ProductTable({
 
                   <div className="flex items-center justify-between mt-4">
                     <h1 className="text-3xl font-bold">${price}</h1>
-                    <Button className="hover:bg-green-600 flex items-center gap-2">
-                      <ShoppingCart className="w-4 h-4" />
-                      Add
-                    </Button>
+                    <AddToCart productDto={productDtoToProductFromCartDto(row.original)} />
                   </div>
                 </CardContent>
               </div>

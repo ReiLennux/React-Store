@@ -12,6 +12,7 @@ import { AuthPage } from './features/auth';
 import CouponsPage from './features/coupons/components/CouponsPage';
 import CouponCreate from './features/coupons/components/CouponCreate';
 import CouponEdit from './features/coupons/components/CouponEdit';
+import CartPage from './features/cart/components/CartPage';
 
 function App() {
   return (
@@ -69,6 +70,13 @@ function App() {
             </ProtectedRoute>
           }
           />
+
+          {/* CART ROUTES */}
+          <Route path="cart/*" element={
+            <ProtectedRoute>
+              <CartPage />
+            </ProtectedRoute>
+          } />
 
           {/* TODO: PUBLIC ROUTES */}
 

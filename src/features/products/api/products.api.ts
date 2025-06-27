@@ -33,6 +33,7 @@ export async function postProduct(request: ProductRequestDto): Promise<Response<
         throw new Error(errorData?.message || `HTTP error! Status: ${res.status}`);
     }
 
+
     return await res.json();
 }
 

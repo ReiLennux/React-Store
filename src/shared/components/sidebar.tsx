@@ -1,5 +1,5 @@
 // src/shared/components/Sidebar.tsx
-import { Home, ChevronUp, User2, Store, UserCircle, Tags } from 'lucide-react';
+import { Home, ChevronUp, User2, Store, UserCircle, Tags, ShoppingCart } from 'lucide-react';
 import { clearAuthCookies, getAuthCookie } from '../utils/cookies';
 import { useNavigate } from 'react-router-dom';
 import { SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, Sidebar, SidebarFooter } from '../../components/ui/sidebar';
@@ -31,6 +31,12 @@ const items = [
     icon: Tags,
     access: ['ADMINISTRADOR', 'VENTAS']
   },
+  {
+    title: "Cart",
+    url: "/cart",
+    icon: ShoppingCart,
+    access: []
+  }
 ]
 
 export function AppSidebar() {
@@ -46,8 +52,8 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <ProtectedComponent allowedRoles={item.access}>
-                <SidebarMenuItem key={item.title}>
+                <ProtectedComponent allowedRoles={item.access}  key={item.title}>
+                <SidebarMenuItem>
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
                       <item.icon />
