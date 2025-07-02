@@ -2,13 +2,16 @@
 import { getAuthCookie } from "@/shared/utils/cookies";
 import { CouponsRequestDto, CouponsResponseDto } from "../types/coupons.types";
 import { Response } from "@/types/api";
-const API_URL = "http://localhost:7777";
+
+
+const API_URL = import.meta.env.VITE_COUPON_MS_URL || '';
 const token = getAuthCookie("token");
+
 
 export async function getAllCoupons(): Promise<Response<CouponsResponseDto[]>> {
 
     try {
-        const res = await fetch(`${API_URL}/api/coupons/`, {
+        const res = await fetch(`${API_URL}/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +33,7 @@ export async function getAllCoupons(): Promise<Response<CouponsResponseDto[]>> {
 export async function getCouponById(id: number): Promise<Response<CouponsResponseDto>> {
 
     try {
-        const res = await fetch(`${API_URL}/api/coupons/${id}`, {
+        const res = await fetch(`${API_URL}/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -52,7 +55,7 @@ export async function getCouponById(id: number): Promise<Response<CouponsRespons
 export async function getCouponByCode(code: string): Promise<Response<CouponsResponseDto>> {
 
     try {
-        const res = await fetch(`${API_URL}/api/coupons/by-code/${code}`, {
+        const res = await fetch(`${API_URL}/by-code/${code}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -74,7 +77,7 @@ export async function getCouponByCode(code: string): Promise<Response<CouponsRes
 export async function postCoupon(request: CouponsRequestDto): Promise<Response<CouponsResponseDto>> {
 
     try {
-        const res = await fetch(`${API_URL}/api/coupons`, {
+        const res = await fetch(`${API_URL}/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -99,7 +102,7 @@ export async function postCoupon(request: CouponsRequestDto): Promise<Response<C
 
 export async function patchCoupon(id: number, request: CouponsRequestDto): Promise<Response<CouponsResponseDto>> {
     try {
-        const res = await fetch(`${API_URL}/api/coupons/${id}`, {
+        const res = await fetch(`${API_URL}/${id}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -124,7 +127,7 @@ export async function patchCoupon(id: number, request: CouponsRequestDto): Promi
 export async function deleteCoupon(id: number): Promise<Response<null>> {
 
     try {
-        const res = await fetch(`${API_URL}/api/coupons/${id}`, {
+        const res = await fetch(`${API_URL}/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

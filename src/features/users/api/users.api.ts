@@ -1,11 +1,12 @@
 import type { Response } from "../../../types/api";
 import { UserRequest } from "../types/user.types";
 
-export async function registerApi(request: UserRequest): Promise<Response<null>> {
-    const API_URL = "http://localhost:7676"; // Replace with your actual API URL
-    
+const API_URL = import.meta.env.VITE_AUTH_MS_URL || '';
+
+
+export async function registerApi(request: UserRequest): Promise<Response<null>> {    
     try {
-        const res = await fetch(`${API_URL}/api/auth/assignRole`, {
+        const res = await fetch(`${API_URL}/assignRole`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(request),
@@ -19,6 +20,6 @@ export async function registerApi(request: UserRequest): Promise<Response<null>>
         return await res.json();
     } catch (error) {
         console.error('Login failed:', error);
-        throw error; // Es mejor lanzar el error para que use pueda manejarlo
+        throw error; 
     }
 }

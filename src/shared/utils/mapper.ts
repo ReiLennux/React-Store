@@ -8,7 +8,7 @@ export default function productDtoToProductFromCartDto(productDto: ProductRespon
     name: productDto.name,
     price: productDto.price,
     description: productDto.description,
-    category: productDto.categoryName,
+    categoryName: productDto.categoryName,
     imageUrl: productDto.imageUrl,
   };
 }

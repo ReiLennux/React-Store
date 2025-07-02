@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/alert-dialog"
 import { ProductResponseDto } from "../types/products.types"
 import { JSX } from "react"
-//import lain from '@/assets/lain.png';
 
 
 interface ProductDetailsProps {
@@ -27,7 +26,6 @@ export function ProductDetails({ product, children }: ProductDetailsProps) {
         {product.imageUrl && (
           <div className="relative h-48 w-full">
             <img
-              //src={lain}
               src={`http://localhost:7575/public/${product.imageUrl}`}
               alt={product.name}
               className="w-full h-full object-cover object-top"

@@ -53,7 +53,7 @@ export default function ProductHome() {
   ]
 
   const table = useReactTable({
-    data: data?.items || [], // aquí pones solo la página actual
+    data: data?.items || [],
     columns,
     getCoreRowModel: getCoreRowModel(),
   });

@@ -8,8 +8,11 @@ import path from 'path';
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss()
+    tailwindcss(),
   ],
+  server: {
+    host: '0.0.0.0' // This will expose the server to the network
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),

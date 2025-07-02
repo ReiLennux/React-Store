@@ -24,7 +24,7 @@ type AlertProps = {
   type: keyof typeof variants;
   message: string;
   onClose?: () => void;
-  duration?: number; // en milisegundos
+  duration?: number; // miliseconds 
 };
 
 export function Alert({ type = 'info', message, onClose, duration = 3000 }: AlertProps) {

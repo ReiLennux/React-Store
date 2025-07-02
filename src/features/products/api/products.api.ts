@@ -3,8 +3,10 @@ import { Response } from "@/types/api";
 import { pagerRequest, pagerResponse, ProductRequestDto, ProductResponseDto } from "../types/products.types";
 import { getAuthCookie } from "@/shared/utils/cookies";
 
-const API_URL = "http://localhost:7575";
+
+const API_URL = import.meta.env.VITE_PRODUCT_MS_URL || '';
 const token = getAuthCookie("token");
+
 
 
 export async function postProduct(request: ProductRequestDto): Promise<Response<ProductResponseDto>> {
@@ -20,7 +22,7 @@ export async function postProduct(request: ProductRequestDto): Promise<Response<
         formData.append("image", request.image);
     }
 
-    const res = await fetch(`${API_URL}/api/products`, {
+    const res = await fetch(`${API_URL}/`, {
         method: "POST",
         headers: {
             "Authorization": `Bearer ${token}`,
@@ -39,7 +41,7 @@ export async function postProduct(request: ProductRequestDto): Promise<Response<
 
 export async function getProducts(): Promise<Response<ProductResponseDto[]>> {
     try {
-        const res = await fetch(`${API_URL}/api/products`, {
+        const res = await fetch(`${API_URL}/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -72,7 +74,7 @@ export async function updateProduct(request: ProductRequestDto): Promise<Respons
         formData.append("image", request.image);
     }
 
-    const res = await fetch(`${API_URL}/api/products/${request.productId}`, {
+    const res = await fetch(`${API_URL}/${request.productId}`, {
         method: "PUT",
         headers: {
             "Authorization": `Bearer ${token}`,
@@ -91,7 +93,7 @@ export async function updateProduct(request: ProductRequestDto): Promise<Respons
 
 export async function getPagerProducts(pager: pagerRequest): Promise<Response<pagerResponse<ProductResponseDto>>> {
     try {
-        const res = await fetch(`${API_URL}/api/products/All?page=${pager.page}&recordsPerPage=${pager.record}`, {
+        const res = await fetch(`${API_URL}/All?page=${pager.page}&recordsPerPage=${pager.record}`, {
                                                            
             method: "GET",
             headers: {
@@ -114,7 +116,7 @@ export async function getPagerProducts(pager: pagerRequest): Promise<Response<pa
 
 export async function deleteProducts(id: number): Promise<Response<null>> {
     try {
-        const res = await fetch(`${API_URL}/api/products/${id}`, {
+        const res = await fetch(`${API_URL}/${id}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -136,7 +138,7 @@ export async function deleteProducts(id: number): Promise<Response<null>> {
 
 export async function getProductById(id: number): Promise<Response<ProductResponseDto>> {
     try {
-        const res = await fetch(`${API_URL}/api/products/${id}`, {
+        const res = await fetch(`${API_URL}/${id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

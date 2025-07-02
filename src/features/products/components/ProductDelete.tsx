@@ -14,7 +14,6 @@ import { useDelete } from "../hooks/useProduct";
 import { Button } from "@/components/ui/button";
 import { useAlert } from "@/contexts/AlertContext";
 
-// Añadimos props para manejar desde el padre
 interface ProductDeleteProps {
   id: number;
 }

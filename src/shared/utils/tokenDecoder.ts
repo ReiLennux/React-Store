@@ -4,7 +4,6 @@ import { jwtDecode } from "jwt-decode";
 
 interface JwtPayload {
     roles: string;
-    // claims
 }
 
 export function getUserRole(): string | null {

@@ -2,13 +2,15 @@ import type { Response } from "@/types/api";
 import { CartDto, CartHeaderDto } from "../types/cart.type";
 import { getAuthCookie } from "@/shared/utils/cookies";
 
+const API_URL = import.meta.env.VITE_CART_MS_URL || '';
+
+
 const token = getAuthCookie("token");
 
 export async function getCart(userId: number): Promise<Response<CartDto>> {
-    const API_URL = "http://localhost:7878";
 
     try {
-        const res = await fetch(`${API_URL}/api/shopping-cart/${userId}`, {
+        const res = await fetch(`${API_URL}/${userId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -31,10 +33,8 @@ export async function getCart(userId: number): Promise<Response<CartDto>> {
 
 export async function upsertCart(cartDto: CartDto): Promise<Response<boolean>> {
 
-    const API_URL = "http://localhost:7878";
-
     try {
-        const res = await fetch(`${API_URL}/api/shopping-cart`, {
+        const res = await fetch(`${API_URL}/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -56,11 +56,11 @@ export async function upsertCart(cartDto: CartDto): Promise<Response<boolean>> {
 
 }
 
-export async function deleteCart(cartHeaderId: number): Promise<Response<boolean>> {
+export async function deleteCart(cartDetailId: number): Promise<Response<boolean>> {
     const API_URL = "http://localhost:7878";
 
     try {
-        const res = await fetch(`${API_URL}/api/shopping-cart/${cartHeaderId}`, {
+        const res = await fetch(`${API_URL}/api/shopping-cart/${cartDetailId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -82,10 +82,8 @@ export async function deleteCart(cartHeaderId: number): Promise<Response<boolean
 
 export async function applyCoupon(cartHeaderDto: CartHeaderDto): Promise<Response<boolean>> {
 
-    const API_URL = "http://localhost:7878";
-
     try {
-        const res = await fetch(`${API_URL}/api/shopping-cart/apply-coupon`, {
+        const res = await fetch(`${API_URL}/apply-coupon`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -107,10 +105,9 @@ export async function applyCoupon(cartHeaderDto: CartHeaderDto): Promise<Respons
 }
 
 export async function removeCoupon(cartHeaderDto: CartHeaderDto): Promise<Response<boolean>> {
-    const API_URL = "http://localhost:7878";
 
     try {
-        const res = await fetch(`${API_URL}/api/shopping-cart/remove-coupon/`, {
+        const res = await fetch(`${API_URL}/remove-coupon/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

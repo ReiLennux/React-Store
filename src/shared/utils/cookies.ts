@@ -3,7 +3,7 @@ import { COOKIES_CONSTANTS } from '../../constants/cookies.constants';
 
 export function setAuthCookies(id: number,token: string, name: string, email: string, phoneNumber?: string) {
   const options = {
-    expires: 1, // 1 día
+    expires: 1, // 1 day
     secure: true,
     sameSite: 'Strict' as const,
   };

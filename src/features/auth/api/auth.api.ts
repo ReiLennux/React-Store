@@ -1,11 +1,12 @@
 import type { AuthResponse, LoginPayload, RegisterRequest } from "../types/auth.types";
 import type { Response } from "../../../types/api";
 
-export async function loginApi(credentials: LoginPayload): Promise<Response<AuthResponse>> {
-    const API_URL = "http://localhost:7676"; 
-    
+const API_URL = import.meta.env.VITE_AUTH_MS_URL || '';
+
+
+export async function loginApi(credentials: LoginPayload): Promise<Response<AuthResponse>> {    
     try {
-        const res = await fetch(`${API_URL}/api/auth/login`, {
+        const res = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
@@ -19,15 +20,14 @@ export async function loginApi(credentials: LoginPayload): Promise<Response<Auth
         return await res.json();
     } catch (error) {
         console.error('Login failed:', error);
-        throw error; // Es mejor lanzar el error para que useLogin pueda manejarlo
+        throw error;
     }
 }
 
 export async function registerApi(request: RegisterRequest): Promise<Response<null>> {
-    const API_URL = "http://localhost:7676"; // Replace with your actual API URL
     
     try {
-        const res = await fetch(`${API_URL}/api/auth/register`, {
+        const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(request),
@@ -41,6 +41,6 @@ export async function registerApi(request: RegisterRequest): Promise<Response<nu
         return await res.json();
     } catch (error) {
         console.error('Login failed:', error);
-        throw error; // Es mejor lanzar el error para que use pueda manejarlo
+        throw error;
     }
 }

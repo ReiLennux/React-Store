@@ -30,7 +30,7 @@ export function useUpsertCart() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const useUpsertCart = async (cartDto: CartDto): Promise<Response<boolean> | null> => {
+  const UseUpsertCart = async (cartDto: CartDto): Promise<Response<boolean> | null> => {
     setLoading(true);
     setError(null);
 
@@ -46,19 +46,19 @@ export function useUpsertCart() {
     }
   };
 
-  return { useUpsertCart, loading, error };
+  return { UseUpsertCart, loading, error };
 }
 
-export function useDeleteCart() {
+export function useDeleteCartDetail() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const useDeleteCart = async (cartHeaderId: number): Promise<Response<boolean> | null> => {
+  const useDelete = async (cartDetailId: number): Promise<Response<boolean> | null> => {
     setLoading(true);
     setError(null);
 
     try {
-      const response = await deleteCart(cartHeaderId);
+      const response = await deleteCart(cartDetailId);
       return response;
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : 'unknown error';
@@ -69,7 +69,7 @@ export function useDeleteCart() {
     }
   };
 
-  return { useDeleteCart, loading, error };
+  return { useDelete, loading, error };
 }
 
 export function useApplyCoupon() {

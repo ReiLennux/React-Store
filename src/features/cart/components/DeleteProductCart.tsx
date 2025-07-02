@@ -1,22 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { useAlert } from "@/contexts/AlertContext";
-import { useDeleteCart as use } from "../hooks/useCart";
+import { useDeleteCartDetail as use } from "../hooks/useCart";
 
 
 interface DeleteProductCartProps {
-    cartHeaderId: number;
+    cartDetailId: number;
 }
 
-export default function DeleteProductCart({ cartHeaderId }: DeleteProductCartProps) {
+export default function DeleteProductCart({ cartDetailId }: DeleteProductCartProps) {
 
     const { showAlert } = useAlert();
-    const { useDeleteCart } = use();
+    const { useDelete } = use();
 
 
 
     const handleDelete = async (e: React.FormEvent) => {
         e.preventDefault();
-        const response = await useDeleteCart(cartHeaderId);
+        const response = await useDelete(cartDetailId);
 
         if (response?.isSuccess) {
             showAlert(response.message || 'Deleted Successfully', 'success', 3000);

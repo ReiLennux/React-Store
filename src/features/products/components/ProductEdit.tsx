@@ -49,7 +49,6 @@ export default function ProductEdit() {
           <CardHeader className="">
             <div className="relative h-48 w-full">
               <img
-                //src={lain}
                 src={`http://localhost:7575/public/${product.imageUrl}`}
                 alt={product.name}
                 className="w-full h-full object-cover object-top"

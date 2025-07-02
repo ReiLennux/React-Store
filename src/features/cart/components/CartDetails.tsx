@@ -64,7 +64,7 @@ export default function CartDetails({
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <img
-                  src={item.ProductDto.imageUrl || "https://via.placeholder.com/60"}
+                  src={`http://localhost:7575/public/${item.ProductDto.imageUrl}`}
                   alt={item.ProductDto.name}
                   className="w-16 h-16 rounded-md object-cover"
                 />
@@ -94,7 +94,7 @@ export default function CartDetails({
                 </span>
 
                 {/* Remove */}
-                <DeleteProductCart cartHeaderId={item.CartHeaderId} />
+                <DeleteProductCart cartDetailId={item.CartDetailsId} />
               </div>
             </div>
 

@@ -5,7 +5,7 @@ import { useUserRole } from "@/hooks/useUserRole";
 
 interface ProtectedRouteProps {
   children: JSX.Element;
-  allowedRoles?: string[]; // roles permitidos (opcional)
+  allowedRoles?: string[];
 }
 
 

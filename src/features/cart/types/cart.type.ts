@@ -27,6 +27,6 @@ export interface ProductFromCartDto {
     name: string;
     price: number;
     description: string | null;
-    category: string;
+    categoryName: string;
     imageUrl: string;
 }

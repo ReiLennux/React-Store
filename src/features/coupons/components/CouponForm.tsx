@@ -8,7 +8,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { SelectGroup } from "@radix-ui/react-select";
 import { Button } from "@/components/ui/button";
-//import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
@@ -30,7 +29,7 @@ export default function CouponForm({ coupon, id }: Props) {
         AmountType: "PERCENTAGE",
         LimitUse: 1,
         DateInit: new Date(),
-        DateEnd: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 días después por defecto
+        DateEnd: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
         Category: "",
         StateCoupon: true,
     });
@@ -196,7 +195,6 @@ export default function CouponForm({ coupon, id }: Props) {
                     value={formData.AmountType}
                     onValueChange={(value) => {
                         setFormData(prev => ({ ...prev, AmountType: value }));
-                        // Reset discount if switching from percentage to fixed or vice versa
                         if ((value === "PERCENTAGE" && formData.discount > 100)) {
                             setFormData(prev => ({ ...prev, discount: 100 }));
                         }
