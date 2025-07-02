@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CouponsRequestDto } from "../types/coupons.types";
 import { useNavigate } from "react-router-dom";
 import { usePatch, usePost } from "../hooks/useCoupons";
@@ -22,6 +22,9 @@ interface Props {
 
 export default function CouponForm({ coupon, id }: Props) {
     const { showAlert } = useAlert();
+    const navigate = useNavigate();
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
     const [formData, setFormData] = useState({
         couponCode: "",
         discount: 0,
@@ -36,7 +39,6 @@ export default function CouponForm({ coupon, id }: Props) {
 
     const [originalData, setOriginalData] = useState("");
     const [error, setError] = useState<string | null>(null);
-    const navigate = useNavigate();
     const { post, loading: isPosting, error: postError } = usePost();
     const { patch, loading: isPatching, error: patchError } = usePatch();
 
@@ -70,10 +72,17 @@ export default function CouponForm({ coupon, id }: Props) {
         }
     }, [coupon]);
 
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type } = e.target;
         const val = type === "number" ? parseFloat(value) || 0 : value;
-        
         setFormData(prev => ({
             ...prev,
             [name]: val,
@@ -85,22 +94,22 @@ export default function CouponForm({ coupon, id }: Props) {
             setError("Discount must be greater than 0");
             return false;
         }
-        
+
         if (formData.AmountType === "PERCENTAGE" && formData.discount > 100) {
             setError("Percentage discount cannot exceed 100%");
             return false;
         }
-        
+
         if (formData.DateEnd <= formData.DateInit) {
             setError("End date must be after start date");
             return false;
         }
-        
+
         if (formData.LimitUse <= 0) {
             setError("Limit use must be at least 1");
             return false;
         }
-        
+
         return true;
     };
 
@@ -111,7 +120,6 @@ export default function CouponForm({ coupon, id }: Props) {
         if (!validateForm()) return;
 
         const jsonToCompare = JSON.stringify({ ...formData });
-
         if (coupon && jsonToCompare === originalData) {
             setError("No changes detected");
             return;
@@ -126,21 +134,23 @@ export default function CouponForm({ coupon, id }: Props) {
             } else {
                 response = await post(payload);
             }
-            
+
             showAlert(response?.message || 'Success', 'success', 3000);
-            setTimeout(() => {
+
+            // ✅ Redirección con timeout cancelable
+            timeoutRef.current = setTimeout(() => {
                 navigate('/coupon');
-            }, 2000); // Redirect after 2 seconds
+            }, 2000);
         } catch (err) {
             console.error(err);
             setError("Error submitting the form");
-            showAlert(error || postError || patchError || "Unknown error", 'error', 3000 )
+            showAlert(error || postError || patchError || "Unknown error", 'error', 3000);
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-6">
-
+            {/* Coupon Code */}
             <div className="space-y-2">
                 <Label htmlFor="couponCode">Coupon Code *</Label>
                 <Input
@@ -157,6 +167,7 @@ export default function CouponForm({ coupon, id }: Props) {
                 <p className="text-sm text-muted-foreground">Unique coupon identifier</p>
             </div>
 
+            {/* Discount and Min Amount */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                     <Label htmlFor="discount">Discount *</Label>
@@ -189,13 +200,14 @@ export default function CouponForm({ coupon, id }: Props) {
                 </div>
             </div>
 
+            {/* Amount Type */}
             <div className="space-y-2">
                 <Label>Amount Type *</Label>
                 <Select
                     value={formData.AmountType}
                     onValueChange={(value) => {
                         setFormData(prev => ({ ...prev, AmountType: value }));
-                        if ((value === "PERCENTAGE" && formData.discount > 100)) {
+                        if (value === "PERCENTAGE" && formData.discount > 100) {
                             setFormData(prev => ({ ...prev, discount: 100 }));
                         }
                     }}
@@ -212,6 +224,7 @@ export default function CouponForm({ coupon, id }: Props) {
                 </Select>
             </div>
 
+            {/* Limit Use */}
             <div className="space-y-2">
                 <Label htmlFor="LimitUse">Usage Limit *</Label>
                 <Input
@@ -227,18 +240,13 @@ export default function CouponForm({ coupon, id }: Props) {
                 <p className="text-sm text-muted-foreground">Maximum number of times this coupon can be used</p>
             </div>
 
+            {/* Dates */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                     <Label>Start Date *</Label>
                     <Popover>
                         <PopoverTrigger asChild>
-                            <Button
-                                variant={"outline"}
-                                className={cn(
-                                    "w-full justify-start text-left font-normal",
-                                    !formData.DateInit && "text-muted-foreground"
-                                )}
-                            >
+                            <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formData.DateInit && "text-muted-foreground")}>
                                 <CalendarIcon className="mr-2 h-4 w-4" />
                                 {formData.DateInit ? format(formData.DateInit, "PPP") : <span>Pick a date</span>}
                             </Button>
@@ -258,13 +266,7 @@ export default function CouponForm({ coupon, id }: Props) {
                     <Label>End Date *</Label>
                     <Popover>
                         <PopoverTrigger asChild>
-                            <Button
-                                variant={"outline"}
-                                className={cn(
-                                    "w-full justify-start text-left font-normal",
-                                    !formData.DateEnd && "text-muted-foreground"
-                                )}
-                            >
+                            <Button variant="outline" className={cn("w-full justify-start text-left font-normal", !formData.DateEnd && "text-muted-foreground")}>
                                 <CalendarIcon className="mr-2 h-4 w-4" />
                                 {formData.DateEnd ? format(formData.DateEnd, "PPP") : <span>Pick a date</span>}
                             </Button>
@@ -282,6 +284,7 @@ export default function CouponForm({ coupon, id }: Props) {
                 </div>
             </div>
 
+            {/* Category */}
             <div className="space-y-2">
                 <Label htmlFor="Category">Category</Label>
                 <Input
@@ -295,6 +298,7 @@ export default function CouponForm({ coupon, id }: Props) {
                 <p className="text-sm text-muted-foreground">Optional category restriction</p>
             </div>
 
+            {/* State */}
             <div className="flex items-center space-x-2">
                 <Switch
                     id="StateCoupon"
@@ -304,31 +308,29 @@ export default function CouponForm({ coupon, id }: Props) {
                 <Label htmlFor="StateCoupon">Active Coupon</Label>
             </div>
 
+            {/* Buttons */}
             <div className="grid grid-cols-2 space-x-4 pt-4">
-                <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => navigate(-1)}
-                    disabled={isPosting || isPatching}
-                >
+                <Button type="button" variant="outline" onClick={() => navigate(-1)} disabled={isPosting || isPatching}>
                     Cancel
                 </Button>
                 <Button
                     type="submit"
                     disabled={isPosting || isPatching}
-                    className={`${id? 'bg-amber-400 hover:bg-amber-500':'bg-green-600 hover:bg-green-700'}`}
+                    className={`${id ? 'bg-amber-400 hover:bg-amber-500' : 'bg-green-600 hover:bg-green-700'}`}
                 >
-                    {isPatching || isPosting ? (
+                    {isPosting || isPatching ? (
                         <span className="flex items-center">
                             <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                             </svg>
                             Processing...
                         </span>
                     ) : coupon ? "Update Coupon" : "Create Coupon"}
                 </Button>
             </div>
+
+            {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
         </form>
     );
 }

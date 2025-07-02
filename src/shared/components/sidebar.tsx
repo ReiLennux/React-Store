@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton, Sidebar, SidebarFooter } from '../../components/ui/sidebar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { ProtectedComponent } from './ProtectedComponent';
+import { useLocation } from "react-router-dom";
+
 
 const items = [
   {
@@ -44,8 +46,11 @@ export function AppSidebar() {
   const name = getAuthCookie('userName');
   const email = getAuthCookie('userEmail');
   const phone = getAuthCookie('userPhoneNumber');
+  const location = useLocation();
+  const hasRibbon = location.pathname.startsWith("/product");
   return (
-    <Sidebar>
+    <div >
+    <Sidebar className={hasRibbon ? "mt-10" : "mt-0"}>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>POS - Lenn Monroy </SidebarGroupLabel>
@@ -97,5 +102,7 @@ export function AppSidebar() {
         </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
+    </div>
+
   );
 }

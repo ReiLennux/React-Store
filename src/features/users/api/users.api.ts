@@ -4,7 +4,7 @@ import { UserRequest } from "../types/user.types";
 const API_URL = import.meta.env.VITE_AUTH_MS_URL || '';
 
 
-export async function registerApi(request: UserRequest): Promise<Response<null>> {    
+export async function AssignRole(request: UserRequest): Promise<Response<null>> {    
     try {
         const res = await fetch(`${API_URL}/assignRole`, {
         method: "POST",

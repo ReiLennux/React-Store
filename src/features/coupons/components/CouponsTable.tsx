@@ -9,9 +9,11 @@ import CouponsDetails from "./CouponsDetails";
 
 type CouponsTableProps = {
   coupons: CouponsResponseDto[];
+    onDeleted: () => void;
+
 };
 
-export default function CouponsTable({ coupons }: CouponsTableProps) {
+export default function CouponsTable({ coupons, onDeleted }: CouponsTableProps) {
   const navigate = useNavigate();
 
   return (
@@ -92,7 +94,7 @@ export default function CouponsTable({ coupons }: CouponsTableProps) {
                     <Edit className="w-4 h-4 mr-2" />
                     Edit
                   </Button>
-                  <CouponsDelete id={item.id} />
+                  <CouponsDelete id={item.id} onDeleted={onDeleted} />
                 </div>
               </ProtectedComponent>
             </div>

@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { UserRequest } from "../types/user.types";
 import type { Response } from "../../../types/api";
-import { registerUser } from "../services/user.service";
+import { assignRole } from "../services/user.service";
 
 
-export function useRegister() {
+export function useAssignRole() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const register = async (userData: UserRequest) : Promise<Response<null>> => {
+    const AssignRole = async (userData: UserRequest) : Promise<Response<null>> => {
         setLoading(true);
         setError(null);
 
         try {
-            const response = await registerUser(userData);
+            const response = await assignRole(userData);
             return response;
         }catch (err: unknown) {
             const errorMessage = err instanceof Error ? err.message : 'Unknown error';
@@ -23,5 +23,5 @@ export function useRegister() {
             setLoading(false);
         }
     }
-    return { register, loading, error };
+    return { AssignRole, loading, error };
 }

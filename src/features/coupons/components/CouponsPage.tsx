@@ -61,7 +61,7 @@ export default function CouponsPage() {
                     </ProtectedComponent>
                 </CardHeader>
                 <CardContent>
-                    <CouponsTable coupons={data}/>
+                    <CouponsTable coupons={data} onDeleted={fetchData}/>
                 </CardContent>
             </Card>
             
